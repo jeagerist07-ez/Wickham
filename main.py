@@ -1,12 +1,18 @@
 import pygame
+import sys
+import os
+
+# Add the src folder to the path so we can import our Player
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+from player import Player
 
 pygame.init()
 screen = pygame.display.set_mode((960, 540))
-pygame.display.set_caption("Wickham")
+pygame.display.set_caption("Wickham: Cat Launcher Edition")
 clock = pygame.time.Clock()
 
-player = pygame.Rect(480, 270, 32, 32)
-speed = 200  # pixels per second
+# Create our cat player in the middle of the screen
+cat_player = Player(480, 270)
 
 running = True
 while running:
@@ -15,12 +21,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    keys = pygame.key.get_pressed()
-    player.x += (keys[pygame.K_d] - keys[pygame.K_a]) * speed * dt
-    player.y += (keys[pygame.K_s] - keys[pygame.K_w]) * speed * dt
+    # Update the player
+    cat_player.update(dt)
 
-    screen.fill((20, 24, 32))
-    pygame.draw.rect(screen, (240, 200, 90), player)
+    # Draw everything
+    screen.fill((20, 24, 32)) # Dark blue background
+    cat_player.draw(screen)
+    
     pygame.display.flip()
 
 pygame.quit()
